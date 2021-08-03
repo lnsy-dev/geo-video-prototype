@@ -1,32 +1,5 @@
 
 
-import { dispatch } from './helpers.js'
-
-
-
-
-class geoLocation extends HTMLElement {
-  connectedCallback(){
-    setInterval((e)=>{
-      const new_pos = navigator.geolocation.getCurrentPosition()
-      dispatch('new-pos', new_pos)
-    }, 100)
-  }
-
-  static get observedAttributes() {
-    return [];
-  }
-
-  attributeChangedCallback(name, old_value, new_value){
-    switch(name){
-      default:
-    }
-  }
-
-}
-
-customElements.define('geo-location', geoLocation)
-
 
 
 
@@ -36,6 +9,7 @@ class EYE extends HTMLElement {
       Gets the target-id
     */    
 
+
     this.peer = new Peer()
 
     this.innerHTML = '<i>Initializing peer component</i>'
@@ -43,65 +17,64 @@ class EYE extends HTMLElement {
     this.peer.on('open', (id) => {
       this.target_id = this.getAttribute('target-id')
       if(this.target_id === null){
-
-        if(window.location.host.split(':')[0] === 'localhost'){
-          console.log('localhost')
-        }
-
         const route = window.location.href + `?&target-id=${id}`
         this.QR_CODE = document.createElement('qr-code')
         this.QR_CODE.setAttribute('value', route)
 
         this.appendChild(this.QR_CODE)
+
+        this.peer.on('connection', (conn) => {
+          this.connection = conn
+
+          this.QR_CODE.remove()
+          this.innerHTML = 'peered to ' + conn.peer
+
+          this.map = document.createElement('geo-map')
+          this.map.setAttribute('accesstoken', 'pk.eyJ1IjoibGluZHNleW15c3NlIiwiYSI6ImNqOGNlYjMzbDA5am8zMmxid2oyc3hrc2cifQ.hK6NXKEl7bK7va2pRtY0Yw')
+          this.map.setAttribute('styleurl', 'mapbox://styles/lindseymysse/ckr47l7ik06te17mze9ghjwqc')
+          this.map.style.zIndex = -100
+          document.body.appendChild(this.map)
+          this.connection.on('data', (data) => {
+            dispatch('UPDATE-MAP', data)
+          })
+        })
+
+        this.peer.on('call', (call) => {
+          call.answer(); // Answer the call with an A/V stream.
+          call.on('stream', (remoteStream) => {
+            const new_vid =  document.createElement('video')
+            new_vid.setAttribute('mute', true)
+            this.prepend(new_vid)
+            new_vid.srcObject = remoteStream
+            new_vid.play()
+          })
+        })
+
       } else {
+        // if there is an id
+        const connection = this.peer.connect(this.target_id)
+        setInterval(()=>{navigator.geolocation.getCurrentPosition((new_pos) => {
+          const new_pos_message = {
+            type:'new-pos-message',
+            data: {
+              latitude: new_pos.coords.latitude,
+              longitude: new_pos.coords.longitude,
+              timestamp: new_pos.timestamp
+            }
+          }
+          connection.send(new_pos_message)
+        })},1000)
+
 
         navigator.getUserMedia({video: true, audio: true}, (stream) => {
           const call = this.peer.call(this.target_id, stream)
-          call.on('stream', function(remoteStream) {
-            // Show stream in some video/canvas element.
-          })
         }, function(err) {
           console.log('Failed to get local stream' ,err)
         })
-
-        document.createElement('geo-location')
-        document.body.addEventListener('new-pos', (e) => {
-          console.log(e.details)
-        })
-
-
       }
     })
 
-    this.peer.on('connection', (conn) => {
-      this.connection = conn
-      this.innerHTML = '<i>connected to peer</i>'
 
-      dispatch('SAVE-TO-PEERS')
-      this.connection.on('data', (data) => {
-        this.innerHTML = data
-        dispatch('DATA-RECEIVED', data)
-      })
-      this.QR_CODE.remove()
-      this.innerHTML = 'peered to ' + conn.peer
-    })
-
-    this.peer.on('call', (call) => {
-      navigator.getUserMedia({video: true, audio: true}, (stream) => {
-        call.answer(stream); // Answer the call with an A/V stream.
-        call.on('stream', (remoteStream) => {
-          const new_vid =  document.createElement('video')
-          new_vid.setAttribute('mute', true)
-          this.prepend(new_vid)
-          new_vid.srcObject = remoteStream
-          new_vid.play()
-
-          // Show stream in some video/canvas element.
-        })
-      }, function(err) {
-        console.log('Failed to get local stream' ,err);
-      })
-    })
 
   }
 

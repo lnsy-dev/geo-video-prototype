@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <title>HOST</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+
 
   <script src="vendor/peer.min.js"></script>
   <script src="vendor/helpers.js" type="module"></script>
@@ -11,10 +20,23 @@
   <script src="vendor/qr-code.js" type="module"></script>
   <script src="vendor/peer-component.js" type="module"></script>
   <script src="vendor/EYE.js" type="module"></script>
-
+  <link rel="stylesheet" type="text/css" href="vendor/geo-map.css">
+  <script type="text/javascript" src="vendor/geo-map.js"></script>
+  <script type="text/javascript">
+    
+     window.dispatch = (name, detail = {}) => {
+      const initialize_event = new CustomEvent(name, {detail: detail})
+      document.dispatchEvent(initialize_event)
+    }
+  </script>
   <style>
     body {
       font-family: monospace;
+    }
+
+    video {
+      max-width:  20em;
+      opacity: 0.6;
     }
 
   </style>

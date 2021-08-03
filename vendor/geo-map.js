@@ -172,6 +172,14 @@ class GeoMap extends HTMLElement {
         root:null,
         rootMargin: '0px'
       })
+
+
+    document.addEventListener('UPDATE-MAP', (e) => {
+      this.map.flyTo({
+        center: [e.detail.data.longitude, e.detail.data.latitude],
+        zoom: 16
+      })
+    })
   }
 
   handleScrollIntoView(e){
@@ -287,12 +295,20 @@ class GeoMap extends HTMLElement {
 customElements.define('geo-map', GeoMap)
 
 
-
+function getNewID() {
+  return 'dtrm-xxxxxxxxxxxxxxxx-'
+    .replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16)
+  }) + Date.now()
+}
 
 
 
 class MapLocation extends HTMLElement {
   connectedCallback(){
+
+    this.setAttribute('id', getNewID())
     this.latitude = this.getAttribute('latitude')
     if(this.latitude === null){
       const latitude_error = `
@@ -336,13 +352,13 @@ class MapLocation extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [];
+    return ['longitude', 'latitude', 'timestamp'];
   }
 
   attributeChangedCallback(name, old_value, new_value){
-    switch(name){
-      default:
-    }
+
+    dispatch('UPDATE-MAP', {name, new_value})
+
   }
 
 }
