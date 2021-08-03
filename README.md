@@ -1,2 +1,3 @@
-# ar1adn3
-Distributed Telelpresence System
+#ARIADNE
+
+## Distributed Telepresence Interface
