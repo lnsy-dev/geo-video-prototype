@@ -3,6 +3,33 @@
 import { dispatch } from './helpers.js'
 
 
+
+
+class geoLocation extends HTMLElement {
+  connectedCallback(){
+    setInterval((e)=>{
+      const new_pos = navigator.geolocation.getCurrentPosition()
+      dispatch('new-pos', new_pos)
+    }, 100)
+  }
+
+  static get observedAttributes() {
+    return [];
+  }
+
+  attributeChangedCallback(name, old_value, new_value){
+    switch(name){
+      default:
+    }
+  }
+
+}
+
+customElements.define('geo-location', geoLocation)
+
+
+
+
 class EYE extends HTMLElement {
   connectedCallback(){
     /*
@@ -21,7 +48,7 @@ class EYE extends HTMLElement {
           console.log('localhost')
         }
 
-        const route = window.location.origin + '/ar1adn3/eye-test.html' + `?&target-id=${id}`
+        const route = window.location.href + `?&target-id=${id}`
         this.QR_CODE = document.createElement('qr-code')
         this.QR_CODE.setAttribute('value', route)
 
@@ -35,6 +62,11 @@ class EYE extends HTMLElement {
           })
         }, function(err) {
           console.log('Failed to get local stream' ,err)
+        })
+
+        document.createElement('geo-location')
+        document.body.addEventListener('new-pos', (e) => {
+          console.log(e.details)
         })
 
 
