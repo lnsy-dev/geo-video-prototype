@@ -3,10 +3,6 @@
 import { dispatch } from './helpers.js'
 
 
-
-
-
-
 class EYE extends HTMLElement {
   connectedCallback(){
     /*
@@ -25,7 +21,7 @@ class EYE extends HTMLElement {
           console.log('localhost')
         }
 
-        const route = window.location.origin + '/eye-test.html' + `?&target-id=${id}`
+        const route = window.location.origin + '/ar1adn3/eye-test.html' + `?&target-id=${id}`
         this.QR_CODE = document.createElement('qr-code')
         this.QR_CODE.setAttribute('value', route)
 
