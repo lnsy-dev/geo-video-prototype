@@ -4,16 +4,14 @@
   <meta charset="utf-8">
   <title>HOST</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-<script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
-
-
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+  <script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
   <script src="vendor/peer.min.js"></script>
   <script src="vendor/helpers.js" type="module"></script>
   <script src="vendor/b64.js"></script>
@@ -44,45 +42,38 @@
     }
 
   </style>
-
 </head>
-
-
-
 <body>
-
-<h1>EYE TEST</h1>
-<button onclick="this.remove()">Please Confirm that you would like video</button>
+<details>
+  <summary>Attach a new device</summary>
+</details>
 
 <script>
-  
-  function getURLValues(URL = window.location.href ){
-    const search_params = new URLSearchParams(URL)
-    let options = {}
-    for (const [key, unparsed_value] of search_params) {
-      if(key !== window.location.origin + window.location.pathname + '?' ){
-        try {
-          const value = JSON.parse(decodeURI(unparsed_value))
-          options[key] = value
-        } catch {
-          options[key] = decodeURI(unparsed_value)
-        }
+function getURLValues(URL = window.location.href ){
+  const search_params = new URLSearchParams(URL)
+  let options = {}
+  for (const [key, unparsed_value] of search_params) {
+    if(key !== window.location.origin + window.location.pathname + '?' ){
+      try {
+        const value = JSON.parse(decodeURI(unparsed_value))
+        options[key] = value
+      } catch {
+        options[key] = decodeURI(unparsed_value)
       }
     }
-    return options
   }
+  return options
+}
 
-  const options = getURLValues()
-  if(options['target-id']){
-    const new_peer = document.createElement('e-y-e')
-    new_peer.setAttribute('target-id', options['target-id'])
-    document.body.prepend(new_peer)
-  } else {
-    const new_eye = document.createElement('e-y-e')
-    document.body.prepend(new_eye)
-  }
-
-
+const options = getURLValues()
+if(options['target-id']){
+  const new_peer = document.createElement('e-y-e')
+  new_peer.setAttribute('target-id', options['target-id'])
+  document.querySelector('details').prepend(new_peer)
+} else {
+  const new_eye = document.createElement('e-y-e')
+  document.querySelector('details').prepend(new_eye)
+}
 </script>
 </body>
 </html>
