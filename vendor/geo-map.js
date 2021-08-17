@@ -97,8 +97,8 @@ class GeoMap extends HTMLElement {
     this.latitude = URLvalues.latitude ? URLvalues.latitude : 0
     this.longitude = URLvalues.longitude ? URLvalues.longitude : 0
     this.zoom = URLvalues.zoom ? URLvalues.zoom : 1
-    this.bearing = URLvalues.bearing ? URLvalues.bearing : 0
-    this.pitch = URLvalues.pitch ? URLvalues.pitch : 0
+    this.bearing = URLvalues.bearing ? URLvalues.bearing : 30
+    this.pitch = URLvalues.pitch ? URLvalues.pitch : 45
     this.home_coord = {
       center:[this.longitude, this.latitude],
       zoom:this.zoom,

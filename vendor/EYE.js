@@ -31,8 +31,9 @@ class EYE extends HTMLElement {
 
           this.map = document.createElement('geo-map')
           this.map.setAttribute('accesstoken', 'pk.eyJ1IjoibGluZHNleW15c3NlIiwiYSI6ImNqOGNlYjMzbDA5am8zMmxid2oyc3hrc2cifQ.hK6NXKEl7bK7va2pRtY0Yw')
-          this.map.setAttribute('styleurl', 'mapbox://styles/lindseymysse/ckr47l7ik06te17mze9ghjwqc')
+          this.map.setAttribute('styleurl', 'mapbox://styles/lindseymysse/cjcqx0yoi5l6c2ro9kxheop6d')
           this.map.style.zIndex = -100
+          this.map.setAttribute('pitch', '45')
           document.body.appendChild(this.map)
           this.connection.on('data', (data) => {
             dispatch('UPDATE-MAP', data)
