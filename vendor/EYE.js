@@ -67,7 +67,7 @@ class EYE extends HTMLElement {
         })},1000)
 
 
-        navigator.getUserMedia({video: true, audio: true}, (stream) => {
+        navigator.getUserMedia({video: true, audio: false}, (stream) => {
           const call = this.peer.call(this.target_id, stream)
         }, function(err) {
           console.log('Failed to get local stream' ,err)
